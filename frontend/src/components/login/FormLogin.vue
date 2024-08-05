@@ -2,7 +2,6 @@
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card" style="width: 100%; max-width: 400px;">
       <div class="card-body">
-        <!-- Logo Section -->
         <div class="text-center mb-2">
           <img src="@/assets/logo.png" alt="Logo" class="logo">
         </div>
@@ -22,20 +21,15 @@
           <button type="button" class="btn btn-primary w-100" @click="attemptProtectedRoute">
             <i class="fas fa-sign-in-alt"></i> Testar Rota Protegida
           </button>
-
         </form>
-        <!-- Uncomment if you want to add a "Forgot Password" link -->
-        <!-- <div class="text-center mt-3"> -->
-        <!--   <a href="#" class="text-muted">Forgot Password?</a> -->
-        <!-- </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
 import axiosInstance from '/src/axiosInstance'
+
 export default {
   name: 'FormLogin',
   data() {
@@ -59,14 +53,12 @@ export default {
         } else {
           console.error('Token not received');
         }
-
       } catch (error) {
         console.error('Error during login:', error);
       }
     },
     async attemptProtectedRoute() {
       try {
-         // localStorage.removeItem('token');
         const response = await axiosInstance.get('/protected-route');
         console.log(response.data);
       } catch (error) {

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Gestor</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,19 +8,19 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <router-link class="nav-link active" aria-current="page" to="/"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fas fa-chalkboard-teacher"></i> Gerenciar Treinamentos</a>
+            <router-link class="nav-link" to="/trainings"><i class="fas fa-chalkboard-teacher"></i> Gerenciar Treinamentos</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fas fa-users"></i> Gerenciar Subordinados</a>
+            <router-link class="nav-link" to="#"><i class="fas fa-users"></i> Gerenciar Subordinados</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fas fa-file-alt"></i> Relatórios</a>
+            <router-link class="nav-link" to="#"><i class="fas fa-file-alt"></i> Relatórios</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fas fa-cogs"></i> Configurações</a>
+            <router-link class="nav-link" to="#"><i class="fas fa-cogs"></i> Configurações</router-link>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -32,6 +32,7 @@
     </div>
   </nav>
 </template>
+
 <script>
 import axiosInstance from '/src/axiosInstance'
 
