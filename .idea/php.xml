@@ -40,7 +40,6 @@
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/pint" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/serializable-closure" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/tinker" />
-      <path value="$PROJECT_DIR$/backend-api/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/framework" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/sail" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/prompts" />
@@ -131,6 +130,7 @@
       <path value="$PROJECT_DIR$/backend-api/vendor/psr/clock" />
       <path value="$PROJECT_DIR$/backend-api/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/backend-api/vendor/laravel/breeze" />
+      <path value="$PROJECT_DIR$/backend-api/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

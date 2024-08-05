@@ -1,8 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import './axios'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@/assets/styles/styles.css';
 
-import '@fortawesome/fontawesome-free/css/all.min.css'
+createApp(App)
+    .use(router)
+    .mount('#app');
 
-createApp(App).mount('#app')
+document.title = 'XYZ Treinamentos';

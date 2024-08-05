@@ -1,19 +1,12 @@
 <template>
-  <NavbarGestor/>
-  <FormLogin/>
+  <div>
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import NavbarGestor from './components/gestor/NavbarGestor.vue'
-import FormLogin from "@/components/login/FormLogin.vue";
-import './assets/styles/styles.css';
-
 export default {
   name: 'App',
-  components: {
-    NavbarGestor,
-    FormLogin
-  }
 }
 </script>
 
@@ -24,5 +17,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  //background-color: #c7d6ea;
 }
 </style>
