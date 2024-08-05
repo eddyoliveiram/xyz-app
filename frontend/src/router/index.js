@@ -3,13 +3,22 @@ import FormLogin from '@/components/login/FormLogin.vue';
 import HomePage from "@/components/gestor/HomePage.vue";
 
 const routes = [
-    {path: '/', component: FormLogin },
-    {path: '/home', component: HomePage}
+    {path: '/', component: FormLogin},
+    {path: '/home', component: HomePage , meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = !!localStorage.getItem('token');
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        next('/');
+    } else {
+        next();
+    }
 });
 
 export default router;

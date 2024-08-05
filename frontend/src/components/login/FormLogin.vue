@@ -60,7 +60,7 @@ export default {
     },
     async attemptProtectedRoute() {
       try {
-        // localStorage.removeItem('token');
+         // localStorage.removeItem('token');
         const response = await axiosInstance.get('/protected-route');
         console.log(response.data);
       } catch (error) {
