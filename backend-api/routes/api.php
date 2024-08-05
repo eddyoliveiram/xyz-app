@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,15 +32,22 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/trainings', [TrainingController::class, 'store']);
     Route::put('/trainings/{training}', [TrainingController::class, 'update']);
     Route::delete('/trainings/{training}', [TrainingController::class, 'destroy']);
+
+
+    Route::get('/subordinates', [UserController::class, 'index']);
+    Route::post('/subordinates', [UserController::class, 'store']);
+    Route::put('/subordinates/{user}', [UserController::class, 'update']);
+    Route::delete('/subordinates/{user}', [UserController::class, 'destroy']);
 });
 
 // AUTH ONLY
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/protected-route', function (Request $request) {
-        return ['Acesso' => 'Liberado'];
-    });
-
-    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/trainings', [TrainingController::class, 'index']);
-    Route::get('/trainings/{training}', [TrainingController::class, 'show']);
+//    Route::get('/protected-route', function (Request $request) {
+//        return ['Acesso' => 'Liberado'];
+//    });
+//
+//    Route::post('/logout', [AuthController::class, 'logout']);
+
+//    Route::get('/trainings/{training}', [TrainingController::class, 'show']);
 });

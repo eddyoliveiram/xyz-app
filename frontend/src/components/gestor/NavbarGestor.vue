@@ -8,13 +8,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
+            <router-link class="nav-link active" aria-current="page" to="#"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/trainings"><i class="fas fa-chalkboard-teacher"></i> Gerenciar Treinamentos</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="#"><i class="fas fa-users"></i> Gerenciar Subordinados</router-link>
+            <router-link class="nav-link" to="/subordinates"><i class="fas fa-users"></i> Gerenciar Subordinados</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="#"><i class="fas fa-file-alt"></i> Relatórios</router-link>
