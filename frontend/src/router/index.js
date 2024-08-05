@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import FormLogin from '@/components/login/FormLogin.vue';
-import HomePage from "@/components/login/HomePage.vue";
+import HomePage from "@/components/gestor/HomePage.vue";
 
 const routes = [
     {path: '/', component: FormLogin },

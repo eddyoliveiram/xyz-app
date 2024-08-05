@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/protected-route', function (Request $request) {
         return ['Acesso' => 'Liberado'];
     });
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
