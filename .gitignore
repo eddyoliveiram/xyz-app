@@ -1,10 +1,10 @@
 # Diretórios e arquivos específicos do backend-api
 backend-api/.phpunit.cache
-backend-api/vendor
-backend-api/node_modules
-backend-api/public/build
-backend-api/public/hot
-backend-api/public/storage
+backend-api/vendor/
+backend-api/node_modules/
+backend-api/public/build/
+backend-api/public/hot/
+backend-api/public/storage/
 backend-api/storage/*.key
 backend-api/.phpunit.result.cache
 backend-api/.env
@@ -15,14 +15,14 @@ backend-api/Homestead.yaml
 backend-api/auth.json
 backend-api/npm-debug.log
 backend-api/yarn-error.log
-backend-api/.fleet
-backend-api/.idea
-backend-api/.vscode
+backend-api/.fleet/
+backend-api/.idea/
+backend-api/.vscode/
 
 # Diretórios e arquivos específicos do frontend
 frontend/.DS_Store
-frontend/node_modules
-frontend/dist
+frontend/node_modules/
+frontend/dist/
 
 frontend/.env.local
 frontend/.env.*.local
