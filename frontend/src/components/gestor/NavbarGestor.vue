@@ -41,11 +41,12 @@ export default {
     async logout() {
       try {
         await axiosInstance.post('/logout');
+      } catch (error) {
+        console.error('Error during logout request:', error);
+      } finally {
         localStorage.removeItem('token');
         delete axiosInstance.defaults.headers.common['Authorization'];
         this.$router.push('/');
-      } catch (error) {
-        console.error('Error during logout:', error);
       }
     }
   }

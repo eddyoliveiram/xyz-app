@@ -51,9 +51,15 @@ export default {
           login: this.login,
           password: this.password,
         });
-        localStorage.setItem('token', response.data.token);
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
-        this.$router.push('/home');
+
+        if (response.data && response.data.token) {
+          localStorage.setItem('token', response.data.token);
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+          this.$router.push('/home');
+        } else {
+          console.error('Token not received');
+        }
+
       } catch (error) {
         console.error('Error during login:', error);
       }

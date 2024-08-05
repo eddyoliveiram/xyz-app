@@ -5,25 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('login', 'password');
+        $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-        if ($credentials['login'] === 'admin' && $credentials['password'] === 'admin') {
+        $user = User::where('login', $request->login)->first();
 
-            $user = User::firstOrCreate(
-                ['email' => 'admin@example.com'],
-                ['name' => 'Admin', 'password' => bcrypt('admin')]
-            );
-
-            $token = $user->createToken('AdminToken')->plainTextToken;
-
+        if ($user && Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('UserToken')->plainTextToken;
             return response()->json(['token' => $token]);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'Credentials not found.'], 401);
     }
 
     public function logout(Request $request)
