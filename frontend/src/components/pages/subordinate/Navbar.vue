@@ -3,9 +3,9 @@
     <div class="sidebar">
       <NavHeader :userName="userName" />
       <ul class="nav flex-column">
-        <NavItem to="/subordinate/dashboard" icon="fas fa-tachometer-alt" text="Dashboard" />
-        <NavItem to="/subordinate/mytrainings" icon="fas fa-chalkboard-teacher" text="Meus Treinamentos" />
-        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />
+        <NavItem to="/subordinate/home" icon="fas fa-house" text="Início" />
+        <NavItem to="/subordinate/records" icon="fas fa-clock" text="Meu histórico" />
+<!--        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />-->
         <LogoutButton @logout="logout" />
       </ul>
     </div>

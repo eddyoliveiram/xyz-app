@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MyTrainingsTable from './MyTrainingsTable.vue';
+import MyTrainingsTable from './RecordsTable.vue';
 
 export default {
   name: 'TrainingsSection',

@@ -19,16 +19,13 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('admin')->get('/test-admin', function () {
-    return response()->json(['message' => 'You are an admin!']);
-});
-
 // AUTH + ADMIN
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/test-admin', function () {
         return response()->json(['message' => 'You are an admin!']);
     });
 
+    Route::get('/trainings', [TrainingController::class, 'index']);
     Route::post('/trainings', [TrainingController::class, 'store']);
     Route::put('/trainings/{training}', [TrainingController::class, 'update']);
     Route::delete('/trainings/{training}', [TrainingController::class, 'destroy']);
@@ -42,12 +39,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 // AUTH ONLY
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/trainings', [TrainingController::class, 'index']);
-//    Route::get('/protected-route', function (Request $request) {
-//        return ['Acesso' => 'Liberado'];
-//    });
-//
-//    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/users/{user}/all-trainings', [UserController::class, 'allTrainings']);
+    Route::get('/users/{user}/completed-trainings', [UserController::class, 'completedTrainings']);
 
-//    Route::get('/trainings/{training}', [TrainingController::class, 'show']);
+    Route::post('/trainings/{training}/enroll', [TrainingController::class, 'enroll']);
+    Route::post('/trainings/{training}/cancel-enrollment', [TrainingController::class, 'cancelEnrollment']);
+    Route::post('/trainings/{training}/update-status', [TrainingController::class, 'updateStatus']);
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Training;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,4 +55,33 @@ class TrainingController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function enroll(Request $request, Training $training)
+    {
+        $user = Auth::user();
+        $training->subordinates()->attach($user, ['status' => 'not_started']);
+
+        return response()->json(['message' => 'Enrolled successfully'], 200);
+    }
+
+    public function cancelEnrollment(Request $request, Training $training)
+    {
+        $user = Auth::user();
+        $training->subordinates()->detach($user);
+
+        return response()->json(['message' => 'Enrollment cancelled successfully'], 200);
+    }
+
+    public function updateStatus(Request $request, Training $training)
+    {
+        $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+        $training->subordinates()->updateExistingPivot($user->id, ['status' => $request->status]);
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
+    }
+
 }

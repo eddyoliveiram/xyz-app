@@ -3,8 +3,8 @@ import FormLogin from '@/components/pages/login/LoginIndex.vue';
 import AdminDashboardPage from "@/components/pages/admin/dashboard/DashboardIndex.vue";
 import TrainingManager from "@/components/pages/admin/trainings/TrainingIndex.vue";
 import SubordinateManager from "@/components/pages/admin/subordinate/SubordinateIndex.vue";
-import DashboardPage from '@/components/pages/subordinate/dashboard/DashboardIndex.vue';
-import MyTrainingsPage from "@/components/pages/subordinate/mytrainings/MyTrainingsIndex.vue";
+import Records from "@/components/pages/subordinate/records/RecordsIndex.vue";
+import HomeIndex from "@/components/pages/subordinate/home/HomeIndex.vue";
 
 const adminRoutes = [
     { path: 'dashboard', component: AdminDashboardPage, meta: { requiresAuth: true, requiresAdmin: true } },
@@ -13,8 +13,8 @@ const adminRoutes = [
 ];
 
 const subordinateRoutes = [
-    { path: 'dashboard', component: DashboardPage, meta: { requiresAuth: true, requiresSubordinate: true } },
-    { path: 'mytrainings', component: MyTrainingsPage, meta: { requiresAuth: true, requiresSubordinate: true } }
+    { path: 'home', component: HomeIndex, meta: { requiresAuth: true, requiresSubordinate: true } },
+    { path: 'records', component: Records, meta: { requiresAuth: true, requiresSubordinate: true } }
 ];
 
 const routes = [

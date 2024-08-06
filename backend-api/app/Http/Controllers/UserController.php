@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Training;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -39,9 +40,6 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-
-//        return response()->json($request->id);
-
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'email' => [
@@ -61,7 +59,6 @@ class UserController extends Controller
             ],
         ]);
 
-
         $user->update($request->all());
 
         return response()->json($user, 200);
@@ -73,4 +70,25 @@ class UserController extends Controller
 
         return response()->json(null, 204);
     }
+    public function allTrainings(User $user)
+    {
+        $trainings = Training::all();
+        $enrolledTrainings = $user->trainings()->get();
+
+        $trainings = $trainings->map(function ($training) use ($enrolledTrainings) {
+            $enrolledTraining = $enrolledTrainings->firstWhere('id', $training->id);
+            $training->is_enrolled = $enrolledTraining ? true : false;
+            $training->status = $enrolledTraining ? $enrolledTraining->pivot->status : null;
+            return $training;
+        });
+
+        return response()->json($trainings);
+    }
+
+    public function completedTrainings(User $user)
+    {
+        $completedTrainings = $user->trainings()->wherePivot('status', 'completed')->get();
+        return response()->json($completedTrainings);
+    }
+
 }

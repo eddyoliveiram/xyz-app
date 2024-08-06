@@ -21,4 +21,11 @@ class Training extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function subordinates()
+    {
+        return $this->belongsToMany(User::class, 'subordinate_training', 'training_id', 'subordinate_id')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 }

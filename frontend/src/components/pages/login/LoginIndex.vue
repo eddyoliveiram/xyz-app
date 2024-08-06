@@ -62,6 +62,7 @@ export default {
 
         if (response.data && response.data.token) {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user_id', response.data.user_id);
           localStorage.setItem('is_admin', response.data.is_admin);
           localStorage.setItem('user_name', response.data.user.name);
           axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;

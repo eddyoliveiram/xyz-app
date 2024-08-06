@@ -45,9 +45,27 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function trainings()
+    public function createdTrainings()
     {
         return $this->hasMany(Training::class, 'user_id');
+    }
+
+    public function trainings()
+    {
+        return $this->belongsToMany(Training::class, 'subordinate_training', 'subordinate_id', 'training_id')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
+
+    public function notEnrolledTrainings()
+    {
+        $enrolledTrainingIds = $this->trainings()->pluck('training_id');
+        return Training::whereNotIn('id', $enrolledTrainingIds)->get();
+    }
+
+    public function enrolledTrainings(User $user)
+    {
+        return $user->trainings()->withPivot('status')->get();
     }
 
 }

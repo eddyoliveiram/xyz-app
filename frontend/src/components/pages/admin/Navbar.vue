@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <div class="sidebar">
-      <NavHeader :userName="userName" />
+      <NavHeader :userName="userName" :isAdmin="true" />
       <ul class="nav flex-column">
         <NavItem to="#" icon="fas fa-tachometer-alt" text="Dashboard" />
         <NavItem to="/admin/trainings" icon="fas fa-chalkboard-teacher" text="Gerenciar Treinamentos" />
         <NavItem to="/admin/subordinates" icon="fas fa-users" text="Gerenciar Subordinados" />
         <NavItem to="#" icon="fas fa-file-alt" text="Relatórios" />
-        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />
+        <!--        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />-->
         <LogoutButton @logout="logout" />
       </ul>
     </div>
