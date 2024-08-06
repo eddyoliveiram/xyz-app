@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <NavbarAdmin v-if="showNavbar && state.isAdmin" :userName="state.userName" />
-    <NavbarSubordinate v-if="showNavbar && !state.isAdmin" :userName="state.userName" />
+    <AdminNavbar v-if="showNavbar && state.isAdmin" :userName="state.userName" />
+    <SubordinateNavbar v-if="showNavbar && !state.isAdmin" :userName="state.userName"  />
+
     <div v-bind:class="{ 'main-content': showNavbar }">
       <router-view />
     </div>
@@ -9,14 +10,14 @@
 </template>
 
 <script>
-import NavbarAdmin from "@/components/gestor/NavbarAdmin.vue";
-import NavbarSubordinate from "@/components/subordinado/NavbarSubordinate.vue";
-import { computed, reactive, provide } from 'vue';
-import { useRoute } from 'vue-router';
+import AdminNavbar from "@/components/pages/admin/Navbar.vue";
+import SubordinateNavbar from "@/components/pages/subordinate/Navbar.vue";
+import {computed, reactive, provide} from 'vue';
+import {useRoute} from 'vue-router';
 
 export default {
   name: 'App',
-  components: { NavbarAdmin, NavbarSubordinate },
+  components: {AdminNavbar, SubordinateNavbar},
   setup() {
     const route = useRoute();
     const showNavbar = computed(() => route.path !== '/');

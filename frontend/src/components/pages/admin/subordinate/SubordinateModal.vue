@@ -1,7 +1,7 @@
 <template>
   <div>
     <div align="left">
-      <button type="button" class="btn btn-success mb-2 mt-2"  @click="openModal">
+      <button type="button" class="btn btn-success mb-2 mt-2" @click="openModal">
         <i class="fas fa-plus-circle"></i> Novo Subordinado
       </button>
     </div>
@@ -14,27 +14,10 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent="submitForm">
-              <div class="mt-2 mb-3 row">
-                <label for="name" class="col-sm-3 col-form-label">Nome</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="name" v-model="subordinate.name" required>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="email" class="col-sm-3 col-form-label">Email</label>
-                <div class="col-sm-9">
-                  <input type="email" class="form-control" id="email" v-model="subordinate.email" required>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="login" class="col-sm-3 col-form-label">Login</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="login" v-model="subordinate.login" required>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-success w-100">
-                <i class="fas fa-save"></i> Salvar
-              </button>
+              <FormInput id="name" label="Nome" v-model="subordinate.name" required />
+              <FormInput id="email" label="Email" type="email" v-model="subordinate.email" required />
+              <FormInput id="login" label="Login" v-model="subordinate.login" required />
+              <FormButton type="submit" label="Salvar" icon="fas fa-save" variant="success" />
             </form>
           </div>
         </div>
@@ -47,9 +30,15 @@
 import axiosInstance from '@/axiosInstance';
 import * as bootstrap from 'bootstrap';
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import FormInput from '@/components/base/FormInput.vue';
+import FormButton from '@/components/base/FormButton.vue';
 
 export default {
   name: 'SubordinateModal',
+  components: {
+    FormInput,
+    FormButton,
+  },
   props: {
     subordinateToEdit: {
       type: Object,
@@ -99,7 +88,7 @@ export default {
 
     watch(() => props.subordinateToEdit, (newSubordinate) => {
       if (newSubordinate) {
-        subordinate.value = { ...newSubordinate };
+        subordinate.value = {...newSubordinate};
         openModal();
       } else {
         resetForm();

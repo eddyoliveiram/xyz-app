@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    Página Inicial
+    Crie a dashboard aqui
   </div>
 </template>
 

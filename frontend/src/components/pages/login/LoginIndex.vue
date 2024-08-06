@@ -8,17 +8,14 @@
         <h5 class="card-title text-center mb-4">XYZ Treinamentos</h5>
         <form @submit.prevent="attempt">
           <div class="mb-3">
-            <label for="login" class="form-label">Login</label>
-            <input type="text" class="form-control" id="login" v-model="login" required>
+            <FormLabel forId="login" label="Login" />
+            <FormField type="text" id="login" v-model="login" required />
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="password" v-model="password" required>
+            <FormLabel forId="password" label="Senha" />
+            <FormField type="password" id="password" v-model="password" required />
           </div>
-          <button type="submit" class="btn btn-primary w-100">
-            <i class="fas fa-sign-in-alt"></i> Acessar
-          </button>
-
+          <FormButton type="submit" label="Acessar" icon="fas fa-sign-in-alt" variant="primary" />
         </form>
       </div>
     </div>
@@ -28,9 +25,17 @@
 <script>
 import axiosInstance from '@/axiosInstance';
 import { inject } from 'vue';
+import FormButton from '@/components/base/FormButton.vue';
+import FormField from '@/components/base/FormField.vue';
+import FormLabel from '@/components/base/FormLabel.vue';
 
 export default {
   name: 'FormLogin',
+  components: {
+    FormButton,
+    FormField,
+    FormLabel
+  },
   data() {
     return {
       login: '',
@@ -61,7 +66,11 @@ export default {
           localStorage.setItem('user_name', response.data.user.name);
           axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
           this.updateState();
-          this.$router.push('/home');
+          if (response.data.is_admin) {
+            this.$router.push('/admin/dashboard');
+          } else {
+            this.$router.push('/subordinate/dashboard');
+          }
         } else {
           console.log('Token not received');
         }
@@ -82,14 +91,6 @@ export default {
 .card-title {
   font-size: 1.5rem;
   font-weight: bold;
-}
-
-.form-control {
-  border-radius: 0.25rem;
-}
-
-.btn-primary {
-  border-radius: 0.25rem;
 }
 
 .logo {

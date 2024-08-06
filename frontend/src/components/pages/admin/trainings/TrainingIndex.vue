@@ -1,6 +1,5 @@
 <template>
   <div class="card">
-
     <div class="card-header">
       <div class="row">
         <div class="col d-flex justify-content-start">
@@ -13,37 +12,14 @@
         </div>
       </div>
     </div>
-
     <div class="card-body">
-      <table class="table">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Título</th>
-          <th>Descrição</th>
-          <th>Data de Início</th>
-          <th>Data de Término</th>
-          <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(training, index) in paginatedTrainings" :key="training.id">
-          <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
-          <td>{{ training.title }}</td>
-          <td>{{ training.description }}</td>
-          <td>{{ training.start_date }}</td>
-          <td>{{ training.end_date }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" @click="editTraining(training)">
-              <i class="fas fa-edit"></i> Editar
-            </button>
-            <button class="btn btn-danger btn-sm" @click="deleteTraining(training.id)">
-              <i class="fas fa-trash"></i> Excluir
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <TrainingTable
+          :trainings="paginatedTrainings"
+          :currentPage="currentPage"
+          :itemsPerPage="itemsPerPage"
+          @edit-training="editTraining"
+          @delete-training="deleteTraining"
+      />
     </div>
     <div class="card-footer text-center">
       <PaginationComp class="mt-2"
@@ -54,18 +30,19 @@
       />
     </div>
   </div>
-
 </template>
 
 <script>
 import TrainingModal from './TrainingModal.vue';
-import PaginationComp from '../pagination/PaginationComp.vue';
+import TrainingTable from './TrainingTable.vue';
+import PaginationComp from '@/components/common/PaginationComponent.vue';
 import axiosInstance from '@/axiosInstance';
 import { ref, computed, onMounted } from 'vue';
 
 export default {
   components: {
     TrainingModal,
+    TrainingTable,
     PaginationComp,
   },
   setup() {

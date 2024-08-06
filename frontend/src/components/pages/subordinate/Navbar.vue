@@ -1,27 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="text-center mb-2">
-          <img src="@/assets/logo.png" alt="Logo" class="logo" width="50">
-        </div>
-        <h5>XYZ Treinamentos</h5>
-      </div>
-      <div class="text-bg-success mb-4">Usuário: {{ userName }}</div>
+      <NavHeader :userName="userName" />
       <ul class="nav flex-column">
-
-        <li class="nav-item">
-          <router-link class="nav-link text-start" to="#"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link text-start" to="#"><i class="fas fa-chalkboard-teacher"></i> Meus Treinamentos</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link text-start" to="#"><i class="fas fa-cogs"></i> Configurações</router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-start" href="#" @click.prevent="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </li>
+        <NavItem to="/subordinate/dashboard" icon="fas fa-tachometer-alt" text="Dashboard" />
+        <NavItem to="/subordinate/mytrainings" icon="fas fa-chalkboard-teacher" text="Meus Treinamentos" />
+        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />
+        <LogoutButton @logout="logout" />
       </ul>
     </div>
   </div>
@@ -29,9 +14,17 @@
 
 <script>
 import axiosInstance from '@/axiosInstance';
+import NavHeader from '@/components/layout/NavHeader.vue';
+import NavItem from '@/components/layout/NavItem.vue';
+import LogoutButton from '@/components/layout/LogoutButton.vue';
 
 export default {
   name: 'NavbarSubordinate',
+  components: {
+    NavHeader,
+    NavItem,
+    LogoutButton
+  },
   props: {
     userName: {
       type: String,
@@ -53,6 +46,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 body {
   display: flex;
@@ -85,7 +79,7 @@ body {
 }
 
 .sidebar .nav-link.active {
-  background-color: #007bff;
+  background-color: #28a745 !important; /* Cor verde para o link ativo */
 }
 
 .sidebar .sidebar-header {

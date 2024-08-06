@@ -14,33 +14,11 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent="submitForm">
-              <div class="mt-2 mb-3 row">
-                <label for="title" class="col-sm-3 col-form-label">Título</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="title" v-model="training.title" required>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="description" class="col-sm-3 col-form-label">Descrição</label>
-                <div class="col-sm-9">
-                  <textarea class="form-control" id="description" v-model="training.description" rows="3" required></textarea>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="start_date" class="col-sm-3 col-form-label">Data de Início</label>
-                <div class="col-sm-9">
-                  <input type="date" class="form-control" id="start_date" v-model="training.start_date" required>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="end_date" class="col-sm-3 col-form-label">Data de Término</label>
-                <div class="col-sm-9">
-                  <input type="date" class="form-control" id="end_date" v-model="training.end_date" required>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-success w-100">
-                <i class="fas fa-save"></i> Salvar
-              </button>
+              <FormInput id="title" label="Título" v-model="training.title" required />
+              <FormTextarea id="description" label="Descrição" v-model="training.description" required />
+              <FormInput id="start_date" label="Data de Início" type="date" v-model="training.start_date" required />
+              <FormInput id="end_date" label="Data de Término" type="date" v-model="training.end_date" required />
+              <FormButton type="submit" label="Salvar" icon="fas fa-save" variant="success" />
             </form>
           </div>
         </div>
@@ -53,9 +31,17 @@
 import axiosInstance from '@/axiosInstance';
 import * as bootstrap from 'bootstrap';
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import FormInput from '@/components/base/FormInput.vue';
+import FormTextarea from '@/components/base/FormTextarea.vue';
+import FormButton from '@/components/base/FormButton.vue';
 
 export default {
   name: 'TrainingModal',
+  components: {
+    FormInput,
+    FormTextarea,
+    FormButton,
+  },
   props: {
     trainingToEdit: {
       type: Object,

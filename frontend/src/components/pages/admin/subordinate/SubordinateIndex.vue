@@ -13,33 +13,13 @@
       </div>
     </div>
     <div class="card-body">
-      <table class="table">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Login</th>
-          <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(subordinate, index) in paginatedSubordinates" :key="subordinate.id">
-          <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
-          <td>{{ subordinate.name }}</td>
-          <td>{{ subordinate.email }}</td>
-          <td>{{ subordinate.login }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" @click="editSubordinate(subordinate)">
-              <i class="fas fa-edit"></i> Editar
-            </button>
-            <button class="btn btn-danger btn-sm" @click="deleteSubordinate(subordinate.id)">
-              <i class="fas fa-trash"></i> Excluir
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <SubordinateTable
+          :subordinates="paginatedSubordinates"
+          :currentPage="currentPage"
+          :itemsPerPage="itemsPerPage"
+          @edit-subordinate="editSubordinate"
+          @delete-subordinate="deleteSubordinate"
+      />
     </div>
     <div class="card-footer text-center">
       <PaginationComp class="mt-2"
@@ -54,13 +34,15 @@
 
 <script>
 import SubordinateModal from './SubordinateModal.vue';
-import PaginationComp from '../pagination/PaginationComp.vue';
+import SubordinateTable from './SubordinateTable.vue';
+import PaginationComp from '@/components/common/PaginationComponent.vue';
 import axiosInstance from '@/axiosInstance';
 import { ref, computed, onMounted } from 'vue';
 
 export default {
   components: {
     SubordinateModal,
+    SubordinateTable,
     PaginationComp,
   },
   setup() {
