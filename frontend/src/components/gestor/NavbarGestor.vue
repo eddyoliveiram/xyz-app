@@ -1,40 +1,39 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Gestor</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="#"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/trainings"><i class="fas fa-chalkboard-teacher"></i> Gerenciar Treinamentos</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/subordinates"><i class="fas fa-users"></i> Gerenciar Subordinados</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="#"><i class="fas fa-file-alt"></i> Relatórios</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="#"><i class="fas fa-cogs"></i> Configurações</router-link>
-          </li>
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-          </li>
-        </ul>
+  <div class="wrapper">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="text-center mb-2">
+          <img src="@/assets/logo.png" alt="Logo" class="logo" width="50">
+        </div>
+        XYZ Treinamentos
       </div>
+      <ul class="nav flex-column">
+
+        <li class="nav-item">
+          <router-link class="nav-link text-start" to="#"><i class="fas fa-tachometer-alt"></i> Dashboard</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link text-start" to="/trainings"><i class="fas fa-chalkboard-teacher"></i> Gerenciar Treinamentos</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link text-start" to="/subordinates"><i class="fas fa-users"></i> Gerenciar Subordinados</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link text-start" to="#"><i class="fas fa-file-alt"></i> Relatórios</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link text-start" to="#"><i class="fas fa-cogs"></i> Configurações</router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-start" href="#" @click.prevent="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
-import axiosInstance from '/src/axiosInstance'
+import axiosInstance from '@/axiosInstance';
 
 export default {
   name: 'NavbarGestor',
@@ -51,5 +50,71 @@ export default {
       }
     }
   }
-}
+};
 </script>
+<style scoped>
+body {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #343a40;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+}
+
+.sidebar .nav-link.active {
+  background-color: #007bff;
+}
+
+.sidebar .sidebar-header {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #fff;
+  padding-bottom: 20px;
+}
+
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card h5 {
+  font-size: 1.25rem;
+}
+
+.card p {
+  font-size: 1rem;
+}
+</style>

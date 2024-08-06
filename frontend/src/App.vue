@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div id="app">
     <NavbarGestor v-if="showNavbar" />
-    <router-view />
+    <div v-bind:class="{ 'main-content': showNavbar }">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -12,7 +14,7 @@ import { useRoute } from 'vue-router';
 
 export default {
   name: 'App',
-  components: { NavbarGestor },
+  components: {NavbarGestor},
   setup() {
     const route = useRoute();
     const showNavbar = computed(() => route.path !== '/');
@@ -30,5 +32,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.main-content {
+  margin-left: 250px; /* This should match the width of the sidebar */
+  padding: 20px;
 }
 </style>

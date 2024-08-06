@@ -1,62 +1,94 @@
 <template>
-  <div>
-    <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="fetchSubordinates" />
-
-    <table class="table mt-4">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Login</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(subordinate, index) in subordinates" :key="subordinate.id">
-        <th scope="row">{{ index + 1 }}</th>
-        <td>{{ subordinate.name }}</td>
-        <td>{{ subordinate.email }}</td>
-        <td>{{ subordinate.login }}</td>
-        <td>
-          <button class="btn btn-warning btn-sm me-2" @click="editSubordinate(subordinate)">
-            <i class="fas fa-edit"></i> Editar
-          </button>
-          <button class="btn btn-danger btn-sm" @click="deleteSubordinate(subordinate.id)">
-            <i class="fas fa-trash"></i> Excluir
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="card mt-4">
+    <div class="card-header">
+      <div class="row">
+        <div class="col d-flex justify-content-start">
+          <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="fetchSubordinates" />
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <h5 class="card-title mb-0">Subordinados</h5>
+        </div>
+        <div class="col d-flex justify-content-end">
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Login</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(subordinate, index) in paginatedSubordinates" :key="subordinate.id">
+          <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
+          <td>{{ subordinate.name }}</td>
+          <td>{{ subordinate.email }}</td>
+          <td>{{ subordinate.login }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" @click="editSubordinate(subordinate)">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-sm" @click="deleteSubordinate(subordinate.id)">
+              <i class="fas fa-trash"></i> Excluir
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-center">
+      <PaginationComp class="mt-2"
+                      :totalItems="totalSubordinates"
+                      :itemsPerPage="itemsPerPage"
+                      :currentPage="currentPage"
+                      @page-changed="handlePageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import SubordinateModal from './SubordinateModal.vue';
+import PaginationComp from '../pagination/PaginationComp.vue';
 import axiosInstance from '@/axiosInstance';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 export default {
   components: {
     SubordinateModal,
+    PaginationComp,
   },
   setup() {
     const subordinates = ref([]);
     const subordinateToEdit = ref(null);
+    const currentPage = ref(1);
+    const itemsPerPage = ref(7);
+    const totalSubordinates = ref(0);
+
+    const paginatedSubordinates = computed(() => {
+      const start = (currentPage.value - 1) * itemsPerPage.value;
+      const end = start + itemsPerPage.value;
+      return subordinates.value.slice(start, end);
+    });
 
     const fetchSubordinates = async () => {
       try {
         const response = await axiosInstance.get('/subordinates');
         subordinates.value = response.data;
+        totalSubordinates.value = response.data.length;
       } catch (error) {
         console.error('Erro ao buscar os subordinados:', error);
         alert('Erro ao buscar os subordinados.');
       }
     };
 
-    const openModal = () => {
-      subordinateToEdit.value = null;
+    const handlePageChange = (page) => {
+      currentPage.value = page;
     };
 
     const editSubordinate = (subordinate) => {
@@ -76,6 +108,10 @@ export default {
       }
     };
 
+    const openModal = () => {
+      subordinateToEdit.value = null;
+    };
+
     onMounted(() => {
       fetchSubordinates();
     });
@@ -83,10 +119,15 @@ export default {
     return {
       subordinates,
       subordinateToEdit,
+      currentPage,
+      itemsPerPage,
+      totalSubordinates,
+      paginatedSubordinates,
       fetchSubordinates,
-      openModal,
+      handlePageChange,
       editSubordinate,
       deleteSubordinate,
+      openModal,
     };
   },
 };
@@ -95,6 +136,5 @@ export default {
 <style scoped>
 .table {
   width: 100%;
-  margin-top: 1rem;
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <button type="button" class="btn btn-primary mt-4" @click="openModal">
-      <i class="fas fa-add"></i> Novo Treinamento
-    </button>
-
+    <div align="left">
+      <button type="button" class="btn btn-success mb-2 mt-2" @click="openModal">
+        <i class="fas fa-plus-circle"></i> Novo Treinamento
+      </button>
+    </div>
     <div class="modal fade" id="trainingModal" tabindex="-1" aria-labelledby="trainingModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -37,7 +38,7 @@
                   <input type="date" class="form-control" id="end_date" v-model="training.end_date" required>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary w-100">
+              <button type="submit" class="btn btn-success w-100">
                 <i class="fas fa-save"></i> Salvar
               </button>
             </form>

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <button type="button" class="btn btn-primary mt-4" @click="openModal">
-      <i class="fas fa-add"></i> Novo Subordinado
-    </button>
-
+    <div align="left">
+      <button type="button" class="btn btn-success mb-2 mt-2"  @click="openModal">
+        <i class="fas fa-plus-circle"></i> Novo Subordinado
+      </button>
+    </div>
     <div class="modal fade" id="subordinateModal" tabindex="-1" aria-labelledby="subordinateModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -31,7 +32,7 @@
                   <input type="text" class="form-control" id="login" v-model="subordinate.login" required>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary w-100">
+              <button type="submit" class="btn btn-success w-100">
                 <i class="fas fa-save"></i> Salvar
               </button>
             </form>
