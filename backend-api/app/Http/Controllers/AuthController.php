@@ -18,18 +18,30 @@ class AuthController extends Controller
 
         $user = User::where('login', $request->login)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            $token = $user->createToken('UserToken')->plainTextToken;
-            return response()->json(['token' => $token]);
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
-        return response()->json(['message' => 'Credentials not found.'], 401);
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials.'], 401);
+        }
+
+        $token = $user->createToken('UserToken')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'is_admin' => $user->is_admin,
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email
+            ]
+        ]);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }

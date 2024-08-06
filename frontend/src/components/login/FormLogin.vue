@@ -8,7 +8,7 @@
         <h5 class="card-title text-center mb-4">XYZ Treinamentos</h5>
         <form @submit.prevent="attempt">
           <div class="mb-3">
-            <label for="username" class="form-label">Login</label>
+            <label for="login" class="form-label">Login</label>
             <input type="text" class="form-control" id="login" v-model="login" required>
           </div>
           <div class="mb-3">
@@ -18,9 +18,7 @@
           <button type="submit" class="btn btn-primary w-100">
             <i class="fas fa-sign-in-alt"></i> Acessar
           </button>
-          <button type="button" class="btn btn-primary w-100" @click="attemptProtectedRoute">
-            <i class="fas fa-sign-in-alt"></i> Testar Rota Protegida
-          </button>
+
         </form>
       </div>
     </div>
@@ -28,7 +26,8 @@
 </template>
 
 <script>
-import axiosInstance from '/src/axiosInstance'
+import axiosInstance from '@/axiosInstance';
+import { inject } from 'vue';
 
 export default {
   name: 'FormLogin',
@@ -38,8 +37,18 @@ export default {
       password: ''
     };
   },
+  setup() {
+    const updateState = inject('updateState');
+
+    return {
+      updateState
+    };
+  },
   methods: {
     async attempt() {
+      localStorage.removeItem('is_admin');
+      localStorage.removeItem('user_name');
+      localStorage.removeItem('token');
       try {
         const response = await axiosInstance.post('/login', {
           login: this.login,
@@ -48,25 +57,20 @@ export default {
 
         if (response.data && response.data.token) {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('is_admin', response.data.is_admin);
+          localStorage.setItem('user_name', response.data.user.name);
           axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+          this.updateState();
           this.$router.push('/home');
         } else {
-          console.error('Token not received');
+          console.log('Token not received');
         }
       } catch (error) {
-        console.error('Error during login:', error);
-      }
-    },
-    async attemptProtectedRoute() {
-      try {
-        const response = await axiosInstance.get('/protected-route');
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching protected data:', error);
+        console.log('Login failed.');
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
