@@ -1,59 +1,59 @@
 <template>
-    <div class="card">
+  <div class="card">
 
-      <div class="card-header">
-        <div class="row">
-          <div class="col d-flex justify-content-start">
-            <TrainingModal :trainingToEdit="trainingToEdit" @training-updated="fetchTrainings" />
-          </div>
-          <div class="col d-flex justify-content-center align-items-center">
-            <h5 class="card-title mb-0">Treinamentos</h5>
-          </div>
-          <div class="col d-flex justify-content-end">
-          </div>
+    <div class="card-header">
+      <div class="row">
+        <div class="col d-flex justify-content-start">
+          <TrainingModal :trainingToEdit="trainingToEdit" @training-updated="fetchTrainings" @close-modal="closeModal" />
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <h5 class="card-title mb-0">Treinamentos</h5>
+        </div>
+        <div class="col d-flex justify-content-end">
         </div>
       </div>
-
-      <div class="card-body">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Título</th>
-            <th>Descrição</th>
-            <th>Data de Início</th>
-            <th>Data de Término</th>
-            <th>Ações</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(training, index) in paginatedTrainings" :key="training.id">
-            <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
-            <td>{{ training.title }}</td>
-            <td>{{ training.description }}</td>
-            <td>{{ training.start_date }}</td>
-            <td>{{ training.end_date }}</td>
-            <td>
-              <button class="btn btn-primary btn-sm me-2" @click="editTraining(training)">
-                <i class="fas fa-edit"></i> Editar
-              </button>
-              <button class="btn btn-danger btn-sm" @click="deleteTraining(training.id)">
-                <i class="fas fa-trash"></i> Excluir
-              </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card-footer text-center">
-        <PaginationComp class="mt-2"
-            :totalItems="totalTrainings"
-            :itemsPerPage="itemsPerPage"
-            :currentPage="currentPage"
-            @page-changed="handlePageChange"
-        />
-      </div>
     </div>
+
+    <div class="card-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Título</th>
+          <th>Descrição</th>
+          <th>Data de Início</th>
+          <th>Data de Término</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(training, index) in paginatedTrainings" :key="training.id">
+          <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
+          <td>{{ training.title }}</td>
+          <td>{{ training.description }}</td>
+          <td>{{ training.start_date }}</td>
+          <td>{{ training.end_date }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" @click="editTraining(training)">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-sm" @click="deleteTraining(training.id)">
+              <i class="fas fa-trash"></i> Excluir
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-center">
+      <PaginationComp class="mt-2"
+                      :totalItems="totalTrainings"
+                      :itemsPerPage="itemsPerPage"
+                      :currentPage="currentPage"
+                      @page-changed="handlePageChange"
+      />
+    </div>
+  </div>
 
 </template>
 
@@ -97,7 +97,14 @@ export default {
     };
 
     const editTraining = (training) => {
-      trainingToEdit.value = training;
+      trainingToEdit.value = null;
+      setTimeout(() => {
+        trainingToEdit.value = training;
+      }, 0);
+    };
+
+    const closeModal = () => {
+      trainingToEdit.value = null;
     };
 
     const deleteTraining = async (id) => {
@@ -127,6 +134,7 @@ export default {
       fetchTrainings,
       handlePageChange,
       editTraining,
+      closeModal,
       deleteTraining,
     };
   },

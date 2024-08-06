@@ -1,9 +1,9 @@
 <template>
-  <div class="card mt-4">
+  <div class="card">
     <div class="card-header">
       <div class="row">
         <div class="col d-flex justify-content-start">
-          <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="fetchSubordinates" />
+          <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="fetchSubordinates" @close-modal="closeModal" />
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <h5 class="card-title mb-0">Subordinados</h5>
@@ -92,7 +92,14 @@ export default {
     };
 
     const editSubordinate = (subordinate) => {
-      subordinateToEdit.value = subordinate;
+      subordinateToEdit.value = null;
+      setTimeout(() => {
+        subordinateToEdit.value = subordinate;
+      }, 0);
+    };
+
+    const closeModal = () => {
+      subordinateToEdit.value = null;
     };
 
     const deleteSubordinate = async (id) => {
@@ -106,10 +113,6 @@ export default {
           alert('Erro ao excluir o subordinado.');
         }
       }
-    };
-
-    const openModal = () => {
-      subordinateToEdit.value = null;
     };
 
     onMounted(() => {
@@ -127,7 +130,7 @@ export default {
       handlePageChange,
       editSubordinate,
       deleteSubordinate,
-      openModal,
+      closeModal,
     };
   },
 };
