@@ -10,6 +10,9 @@
     </tr>
     </thead>
     <tbody>
+    <tr v-if="subordinates.length === 0">
+      <td colspan="4" class="text-center">Nenhum subordinado cadastrado.</td>
+    </tr>
     <tr v-for="(subordinate, index) in subordinates" :key="subordinate.id">
       <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
       <td>{{ subordinate.name }}</td>

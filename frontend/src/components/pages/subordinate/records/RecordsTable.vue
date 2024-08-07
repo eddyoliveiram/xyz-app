@@ -12,7 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(training, index) in trainings" :key="training.id">
+        <tr v-if="trainings.length === 0">
+          <td colspan="4" class="text-center">Nenhum treinamento concluído até o momento.</td>
+        </tr>
+        <tr v-else v-for="(training, index) in trainings" :key="training.id">
           <th scope="row">{{ index + 1 }}</th>
           <td>{{ training.title }}</td>
           <td>{{ training.description }}</td>

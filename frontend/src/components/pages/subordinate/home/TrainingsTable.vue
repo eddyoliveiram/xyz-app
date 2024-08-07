@@ -13,7 +13,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(training, index) in filteredTrainings" :key="training.id">
+        <tr v-if="filteredTrainings.length === 0">
+          <td colspan="5" class="text-center">Nenhum treinamento disponível até o momento.</td>
+        </tr>
+        <tr v-else v-for="(training, index) in filteredTrainings" :key="training.id">
           <th scope="row">{{ index + 1 }}</th>
           <td>{{ training.title }}</td>
           <td>{{ training.description }}</td>

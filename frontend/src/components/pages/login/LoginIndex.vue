@@ -70,7 +70,7 @@ export default {
           if (response.data.is_admin) {
             this.$router.push('/admin/dashboard');
           } else {
-            this.$router.push('/subordinate/dashboard');
+            this.$router.push('/subordinate/home');
           }
         } else {
           console.log('Token not received');
