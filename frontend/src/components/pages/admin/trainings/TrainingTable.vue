@@ -1,5 +1,6 @@
 <template>
-  <table class="table table-striped">
+  <div class="table-responsive">
+  <table class="table table-striped ">
     <thead>
     <tr>
       <th scope="col">#</th>
@@ -23,6 +24,7 @@
     </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>

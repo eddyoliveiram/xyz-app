@@ -29,7 +29,8 @@
               >
                 <option value="not_started">Não iniciado</option>
                 <option value="in_progress">Em andamento</option>
-                <option value="completed">Concluído</option>
+                <option value="aproved">Aprovado</option>
+                <option value="reproved">Reprovado</option>
               </select>
             </div>
             <div v-else>
@@ -65,7 +66,7 @@ export default {
   },
   computed: {
     filteredTrainings() {
-      return this.trainings.filter(training => training.status !== 'completed');
+      return this.trainings.filter(training => training.status !== 'aproved' && training.status !== 'reproved');
     }
   }
 };

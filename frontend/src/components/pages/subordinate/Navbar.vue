@@ -45,8 +45,8 @@ export default {
         localStorage.removeItem('token');
         delete axiosInstance.defaults.headers.common['Authorization'];
         Swal.fire({
-          title: 'Deslogado',
-          text: 'Você foi deslogado com sucesso.',
+          title: '',
+          text: 'Deslogando...',
           icon: 'success',
           timer: 1500,
           showConfirmButton: false
@@ -56,6 +56,7 @@ export default {
       } catch (error) {
         console.error('Error during logout request:', error);
         Swal.fire('Erro', 'Erro durante o logout.', 'error');
+        this.$router.push('/');
       } finally {
         this.isProcessing = false;
       }

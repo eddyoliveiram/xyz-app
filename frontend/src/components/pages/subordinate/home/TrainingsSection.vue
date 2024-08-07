@@ -91,10 +91,10 @@ export default {
     };
 
     const confirmUpdateStatus = (trainingId, currentStatus) => {
-      if (currentStatus === 'completed') {
+      if (currentStatus === 'aproved' || currentStatus === 'reproved') {
         Swal.fire({
           title: 'Você tem certeza?',
-          text: 'Ao marcar como concluído, o treinamento ainda poderá ser visualizado no item de menu "Meu histórico".',
+          text: 'Ao marcar o status como "aprovado" ou "reprovado" a ação não poderá ser desfeita, o registro de conclusão do treinamento ainda poderá ser visualizado no item de menu "Meu histórico".',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

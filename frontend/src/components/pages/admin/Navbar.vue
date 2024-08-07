@@ -3,7 +3,7 @@
     <div class="sidebar">
       <NavHeader :userName="userName" :isAdmin="true" />
       <ul class="nav flex-column">
-        <NavItem to="#" icon="fas fa-tachometer-alt" text="Dashboard" />
+        <NavItem to="/admin/dashboard" icon="fas fa-tachometer-alt" text="Dashboard" />
         <NavItem to="/admin/trainings" icon="fas fa-chalkboard-teacher" text="Gerenciar Treinamentos" />
         <NavItem to="/admin/subordinates" icon="fas fa-users" text="Gerenciar Subordinados" />
         <!-- <NavItem to="#" icon="fas fa-file-alt" text="Relatórios" /> -->
@@ -60,6 +60,7 @@ export default {
       } catch (error) {
         console.error('Error during logout request:', error);
         Swal.fire('Erro', 'Erro durante o logout.', 'error');
+        this.$router.push('/');
       } finally {
         this.isProcessing = false;
       }

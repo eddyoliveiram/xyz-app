@@ -8,19 +8,25 @@
           <th scope="col">#</th>
           <th scope="col">Título</th>
           <th scope="col">Descrição</th>
+          <th scope="col">Resultado</th>
           <th scope="col">Ações</th>
         </tr>
         </thead>
         <tbody>
         <tr v-if="trainings.length === 0">
-          <td colspan="4" class="text-center">Nenhum treinamento concluído até o momento.</td>
+          <td colspan="5" class="text-center">Nenhum treinamento concluído até o momento.</td>
         </tr>
         <tr v-else v-for="(training, index) in trainings" :key="training.id">
           <th scope="row">{{ index + 1 }}</th>
           <td>{{ training.title }}</td>
           <td>{{ training.description }}</td>
+          <td :class="getStatusClass(training.pivot.status)">
+            {{ getStatusText(training.pivot.status) }}
+          </td>
           <td>
-            <button @click="viewDetails(training)" class="btn btn-primary btn-sm"><i class="fa fa-search" aria-hidden="true"></i> Ver Detalhes</button>
+            <button @click="viewDetails(training)" class="btn btn-primary btn-sm">
+              <i class="fa fa-search" aria-hidden="true"></i> Ver Detalhes
+            </button>
           </td>
         </tr>
         </tbody>
@@ -77,6 +83,17 @@ export default {
       modal.show();
     };
 
+    const getStatusClass = (status) => {
+      return {
+        'text-success': status === 'aproved',
+        'text-danger': status === 'reproved'
+      };
+    };
+
+    const getStatusText = (status) => {
+      return status === 'aproved' ? 'Aprovado' : 'Reprovado';
+    };
+
     onMounted(() => {
       fetchCompletedTrainings();
     });
@@ -84,7 +101,9 @@ export default {
     return {
       trainings,
       selectedTraining,
-      viewDetails
+      viewDetails,
+      getStatusClass,
+      getStatusText
     };
   }
 };
@@ -108,5 +127,13 @@ export default {
 
 .btn-primary {
   border-radius: 0.25rem;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
 }
 </style>
