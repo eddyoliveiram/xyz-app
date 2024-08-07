@@ -3,7 +3,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col d-flex justify-content-start">
-          <TrainingModal :trainingToEdit="trainingToEdit" @training-updated="fetchTrainings" @close-modal="closeModal" />
+          <TrainingModal :trainingToEdit="trainingToEdit" @training-updated="handleTrainingUpdated" @close-modal="closeModal" />
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <h5 class="card-title mb-0">Treinamentos</h5>
@@ -18,7 +18,7 @@
           :currentPage="currentPage"
           :itemsPerPage="itemsPerPage"
           @edit-training="editTraining"
-          @delete-training="deleteTraining"
+          @delete-training="confirmDeleteTraining"
       />
     </div>
     <div class="card-footer text-center">
@@ -38,6 +38,7 @@ import TrainingTable from './TrainingTable.vue';
 import PaginationComp from '@/components/common/PaginationComponent.vue';
 import axiosInstance from '@/axiosInstance';
 import { ref, computed, onMounted } from 'vue';
+import Swal from 'sweetalert2';
 
 export default {
   components: {
@@ -65,7 +66,7 @@ export default {
         totalTrainings.value = response.data.length;
       } catch (error) {
         console.error('Erro ao buscar os treinamentos:', error);
-        alert('Erro ao buscar os treinamentos.');
+        Swal.fire('Erro', 'Erro ao buscar os treinamentos.', 'error');
       }
     };
 
@@ -84,17 +85,36 @@ export default {
       trainingToEdit.value = null;
     };
 
-    const deleteTraining = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este treinamento?')) {
-        try {
-          await axiosInstance.delete(`/trainings/${id}`);
-          fetchTrainings();
-          alert('Treinamento excluído com sucesso!');
-        } catch (error) {
-          console.error('Erro ao excluir o treinamento:', error);
-          alert('Erro ao excluir o treinamento.');
+    const confirmDeleteTraining = (id) => {
+      Swal.fire({
+        title: 'Você tem certeza?',
+        text: 'Você não poderá reverter isso!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteTraining(id);
         }
+      });
+    };
+
+    const deleteTraining = async (id) => {
+      try {
+        await axiosInstance.delete(`/trainings/${id}`);
+        fetchTrainings();
+        Swal.fire('Excluído!', 'Seu treinamento foi excluído.', 'success');
+      } catch (error) {
+        console.error('Erro ao excluir o treinamento:', error);
+        Swal.fire('Erro', 'Erro ao excluir o treinamento.', 'error');
       }
+    };
+
+    const handleTrainingUpdated = () => {
+      fetchTrainings();
     };
 
     onMounted(() => {
@@ -112,7 +132,8 @@ export default {
       handlePageChange,
       editTraining,
       closeModal,
-      deleteTraining,
+      confirmDeleteTraining,
+      handleTrainingUpdated,
     };
   },
 };

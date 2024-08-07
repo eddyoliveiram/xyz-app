@@ -11,7 +11,7 @@
     </thead>
     <tbody>
     <tr v-if="subordinates.length === 0">
-      <td colspan="4" class="text-center">Nenhum subordinado cadastrado.</td>
+      <td colspan="5" class="text-center">Nenhum subordinado cadastrado.</td>
     </tr>
     <tr v-for="(subordinate, index) in subordinates" :key="subordinate.id">
       <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
@@ -20,7 +20,7 @@
       <td>{{ subordinate.login }}</td>
       <td>
         <EditButton @click="editSubordinate(subordinate)" />
-        <DeleteButton :disabled="isProcessing" @click="handleDelete(subordinate.id)" />
+        <DeleteButton :disabled="isProcessing" @click="emitDelete(subordinate.id)" />
       </td>
     </tr>
     </tbody>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import EditButton from '../../../base/EditButton.vue';
-import DeleteButton from '../../../base/DeleteButton.vue';
+import EditButton from '@/components/base/EditButton.vue';
+import DeleteButton from '@/components/base/DeleteButton.vue';
 
 export default {
   name: 'SubordinateTable',
@@ -45,11 +45,11 @@ export default {
     itemsPerPage: {
       type: Number,
       required: true
-    },
+    }
   },
   components: {
     EditButton,
-    DeleteButton,
+    DeleteButton
   },
   data() {
     return {
@@ -60,18 +60,8 @@ export default {
     editSubordinate(subordinate) {
       this.$emit('edit-subordinate', subordinate);
     },
-    async handleDelete(id) {
-      if (this.isProcessing) return;
-      this.isProcessing = true;
-      try {
-        await this.deleteSubordinate(id);
-      } finally {
-        this.isProcessing = false;
-      }
-    },
-    deleteSubordinate(id) {
-      // Confirm delete
-      if (confirm('Tem certeza que deseja excluir este subordinado?')) {
+    emitDelete(id) {
+      if (!this.isProcessing) {
         this.$emit('delete-subordinate', id);
       }
     }

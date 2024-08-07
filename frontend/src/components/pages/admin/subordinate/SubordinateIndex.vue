@@ -3,7 +3,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col d-flex justify-content-start">
-          <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="fetchSubordinates" @close-modal="closeModal" />
+          <SubordinateModal :subordinateToEdit="subordinateToEdit" @subordinate-updated="handleSubordinateUpdated" @close-modal="closeModal" />
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <h5 class="card-title mb-0">Subordinados</h5>
@@ -18,7 +18,7 @@
           :currentPage="currentPage"
           :itemsPerPage="itemsPerPage"
           @edit-subordinate="editSubordinate"
-          @delete-subordinate="deleteSubordinate"
+          @delete-subordinate="confirmDeleteSubordinate"
       />
     </div>
     <div class="card-footer text-center">
@@ -37,7 +37,8 @@ import SubordinateModal from './SubordinateModal.vue';
 import SubordinateTable from './SubordinateTable.vue';
 import PaginationComp from '@/components/common/PaginationComponent.vue';
 import axiosInstance from '@/axiosInstance';
-import { ref, computed, onMounted } from 'vue';
+import {ref, computed, onMounted} from 'vue';
+import Swal from 'sweetalert2';
 
 export default {
   components: {
@@ -65,7 +66,7 @@ export default {
         totalSubordinates.value = response.data.length;
       } catch (error) {
         console.error('Erro ao buscar os subordinados:', error);
-        alert('Erro ao buscar os subordinados.');
+        Swal.fire('Erro', 'Erro ao buscar os subordinados.', 'error');
       }
     };
 
@@ -84,17 +85,36 @@ export default {
       subordinateToEdit.value = null;
     };
 
-    const deleteSubordinate = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este subordinado?')) {
-        try {
-          await axiosInstance.delete(`/subordinates/${id}`);
-          fetchSubordinates();
-          alert('Subordinado excluído com sucesso!');
-        } catch (error) {
-          console.error('Erro ao excluir o subordinado:', error);
-          alert('Erro ao excluir o subordinado.');
+    const confirmDeleteSubordinate = (id) => {
+      Swal.fire({
+        title: 'Você tem certeza?',
+        text: 'Você não poderá reverter isso!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteSubordinate(id);
         }
+      });
+    };
+
+    const deleteSubordinate = async (id) => {
+      try {
+        await axiosInstance.delete(`/subordinates/${id}`);
+        fetchSubordinates();
+        Swal.fire('Excluído!', 'Subordinado excluído com sucesso!', 'success');
+      } catch (error) {
+        console.error('Erro ao excluir o subordinado:', error);
+        Swal.fire('Erro', 'Erro ao excluir o subordinado.', 'error');
       }
+    };
+
+    const handleSubordinateUpdated = () => {
+      fetchSubordinates();
     };
 
     onMounted(() => {
@@ -111,8 +131,9 @@ export default {
       fetchSubordinates,
       handlePageChange,
       editSubordinate,
-      deleteSubordinate,
       closeModal,
+      confirmDeleteSubordinate,
+      handleSubordinateUpdated,
     };
   },
 };

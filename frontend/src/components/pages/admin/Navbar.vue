@@ -6,9 +6,9 @@
         <NavItem to="#" icon="fas fa-tachometer-alt" text="Dashboard" />
         <NavItem to="/admin/trainings" icon="fas fa-chalkboard-teacher" text="Gerenciar Treinamentos" />
         <NavItem to="/admin/subordinates" icon="fas fa-users" text="Gerenciar Subordinados" />
-<!--        <NavItem to="#" icon="fas fa-file-alt" text="Relatórios" />-->
-        <!--        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />-->
-        <LogoutButton @logout="logout" />
+        <!-- <NavItem to="#" icon="fas fa-file-alt" text="Relatórios" /> -->
+        <!-- <NavItem to="#" icon="fas fa-cogs" text="Configurações" /> -->
+        <LogoutButton @logout="confirmLogout" />
       </ul>
     </div>
   </div>
@@ -19,6 +19,7 @@ import NavHeader from '@/components/layout/NavHeader.vue';
 import NavItem from '@/components/layout/NavItem.vue';
 import LogoutButton from '@/components/layout/LogoutButton.vue';
 import axiosInstance from '@/axiosInstance';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'AdminNavbar',
@@ -45,7 +46,24 @@ export default {
         localStorage.removeItem('token');
         delete axiosInstance.defaults.headers.common['Authorization'];
         this.$router.push('/');
+        Swal.fire('Deslogado', 'Você foi deslogado com sucesso.', 'success');
       }
+    },
+    confirmLogout() {
+      Swal.fire({
+        title: 'Você tem certeza?',
+        text: 'Você será desconectado!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Sim, deslogar!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.logout();
+        }
+      });
     }
   }
 };

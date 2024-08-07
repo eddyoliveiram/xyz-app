@@ -31,6 +31,7 @@
 import axiosInstance from '@/axiosInstance';
 import * as bootstrap from 'bootstrap';
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import Swal from 'sweetalert2';
 import FormInput from '@/components/base/FormInput.vue';
 import FormTextarea from '@/components/base/FormTextarea.vue';
 import FormButton from '@/components/base/FormButton.vue';
@@ -66,10 +67,10 @@ export default {
       try {
         if (training.value.id) {
           await axiosInstance.put(`/trainings/${training.value.id}`, training.value);
-          alert('Treinamento atualizado com sucesso!');
+          Swal.fire('Sucesso', 'Treinamento atualizado com sucesso!', 'success');
         } else {
           await axiosInstance.post('/trainings', training.value);
-          alert('Treinamento criado com sucesso!');
+          Swal.fire('Sucesso', 'Treinamento criado com sucesso!', 'success');
         }
         emit('training-updated');
         const modal = bootstrap.Modal.getInstance(document.getElementById('trainingModal'));
@@ -77,7 +78,7 @@ export default {
         resetForm();
       } catch (error) {
         console.error('Erro:', error);
-        alert(`API ERROR: ${error.response.data.message}`);
+        Swal.fire('Erro', `API ERROR: ${error.response.data.message}`, 'error');
       }
     };
 

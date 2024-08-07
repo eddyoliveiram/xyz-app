@@ -29,7 +29,8 @@
 <script>
 import axiosInstance from '@/axiosInstance';
 import * as bootstrap from 'bootstrap';
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
+import Swal from 'sweetalert2';
 import FormInput from '@/components/base/FormInput.vue';
 import FormButton from '@/components/base/FormButton.vue';
 
@@ -45,7 +46,7 @@ export default {
       default: null,
     },
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const subordinate = ref({
       id: null,
       name: '',
@@ -62,10 +63,10 @@ export default {
       try {
         if (subordinate.value.id) {
           await axiosInstance.put(`/subordinates/${subordinate.value.id}`, subordinate.value);
-          alert('Subordinado atualizado com sucesso!');
+          Swal.fire('Sucesso', 'Subordinado atualizado com sucesso!', 'success');
         } else {
           await axiosInstance.post('/subordinates', subordinate.value);
-          alert('Subordinado criado com sucesso!');
+          Swal.fire('Sucesso', 'Subordinado criado com sucesso!', 'success');
         }
         emit('subordinate-updated');
         const modal = bootstrap.Modal.getInstance(document.getElementById('subordinateModal'));
@@ -73,7 +74,7 @@ export default {
         resetForm();
       } catch (error) {
         console.error('Erro:', error);
-        alert(`API ERROR: ${error.response.data.message}`);
+        Swal.fire('Erro', `API ERROR: ${error.response.data.message}`, 'error');
       }
     };
 

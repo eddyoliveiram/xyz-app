@@ -18,7 +18,7 @@
       <td>{{ training.description }}</td>
       <td>
         <EditButton @click="$emit('edit-training', training)" />
-        <DeleteButton :disabled="isProcessing" @click="handleDelete(training.id)" />
+        <DeleteButton :disabled="isProcessing" @click="$emit('delete-training', training.id)" />
       </td>
     </tr>
     </tbody>
@@ -53,19 +53,6 @@ export default {
     return {
       isProcessing: false
     };
-  },
-  methods: {
-    async handleDelete(id) {
-      if (this.isProcessing) return;
-      this.isProcessing = true;
-      try {
-        if (confirm('Tem certeza que deseja excluir este treinamento?')) {
-          await this.$emit('delete-training', id);
-        }
-      } finally {
-        this.isProcessing = false;
-      }
-    }
   }
 };
 </script>
