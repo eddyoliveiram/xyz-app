@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthRequest;
+use App\Repositories\AuthRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
-        $request->validate([
-            'login' => 'required|string',
-            'password' => 'required|string',
-        ]);
+    protected $userRepository;
 
-        $user = User::where('login', $request->login)->first();
+    public function __construct(AuthRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+    public function login(AuthRequest $request)
+    {
+        $user = $this->userRepository->findByLogin($request->login);
 
         if (!$user) {
             return response()->json(['message' => 'Usuário não encontrado.'], 404);
@@ -26,7 +28,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credenciais não encontradas.'], 401);
         }
 
-        $token = $user->createToken('UserToken')->plainTextToken;
+        $token = $this->userRepository->createToken($user);
 
         return response()->json([
             'token' => $token,
