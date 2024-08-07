@@ -9,16 +9,19 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="trainingModalLabel">{{ training.id ? 'Editar Treinamento' : 'Novo Treinamento' }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="resetForm"></button>
+            <h5 class="modal-title" id="trainingModalLabel">{{
+                training.id ? 'Editar Treinamento' : 'Novo Treinamento'
+              }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    @click="resetForm"></button>
           </div>
           <div class="modal-body">
             <form @submit.prevent="submitForm">
-              <FormInput id="title" label="Título" v-model="training.title" required />
-              <FormTextarea id="description" label="Descrição" v-model="training.description" required />
-              <FormInput id="start_date" label="Data de Início" type="date" v-model="training.start_date" required />
-              <FormInput id="end_date" label="Data de Término" type="date" v-model="training.end_date" required />
-              <FormButton type="submit" label="Salvar" icon="fas fa-save" variant="success" />
+              <FormInput id="title" label="Título" v-model="training.title" required/>
+              <FormTextarea id="description" label="Descrição" v-model="training.description" required/>
+              <FormInput id="start_date" label="Data de Início" type="date" v-model="training.start_date" required/>
+              <FormInput id="end_date" label="Data de Término" type="date" v-model="training.end_date" required/>
+              <FormButton type="submit" label="Salvar" icon="fas fa-save" variant="success"/>
             </form>
           </div>
         </div>
@@ -30,7 +33,7 @@
 <script>
 import axiosInstance from '@/axiosInstance';
 import * as bootstrap from 'bootstrap';
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
 import Swal from 'sweetalert2';
 import FormInput from '@/components/base/FormInput.vue';
 import FormTextarea from '@/components/base/FormTextarea.vue';
@@ -49,7 +52,7 @@ export default {
       default: null,
     },
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const training = ref({
       id: null,
       title: '',
@@ -64,6 +67,11 @@ export default {
     };
 
     const submitForm = async () => {
+      if (new Date(training.value.end_date) <= new Date(training.value.start_date)) {
+        Swal.fire('Aviso', 'A data de término deve ser posterior à data de início.', 'warning');
+        return;
+      }
+
       try {
         if (training.value.id) {
           await axiosInstance.put(`/trainings/${training.value.id}`, training.value);
@@ -94,7 +102,7 @@ export default {
 
     watch(() => props.trainingToEdit, (newTraining) => {
       if (newTraining) {
-        training.value = { ...newTraining };
+        training.value = {...newTraining};
         openModal();
       } else {
         resetForm();
