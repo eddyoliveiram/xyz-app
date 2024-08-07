@@ -24,7 +24,7 @@
             <div v-if="training.is_enrolled">
               <select
                   v-model="training.status"
-                  @change="$emit('update-status', training.id, training.status)"
+                  @change="onStatusChange(training.id, training.status)"
                   class="form-select form-select-sm"
               >
                 <option value="not_started">Não iniciado</option>
@@ -56,6 +56,11 @@ export default {
     trainings: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    onStatusChange(trainingId, status) {
+      this.$emit('update-status', trainingId, status);
     }
   },
   computed: {

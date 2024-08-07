@@ -1,11 +1,10 @@
 <template>
   <div>
-<!--    <button @click="testFetchAllTrainings" class="btn btn-secondary mb-3">Testar Rota</button>-->
     <TrainingsTable
         :trainings="trainings"
-        @enroll-training="enrollTraining"
-        @cancel-enrollment="cancelEnrollment"
-        @update-status="updateTrainingStatus"
+        @enroll-training="confirmEnrollTraining"
+        @cancel-enrollment="confirmCancelEnrollment"
+        @update-status="confirmUpdateStatus"
     />
   </div>
 </template>
@@ -13,7 +12,8 @@
 <script>
 import TrainingsTable from './TrainingsTable.vue';
 import axiosInstance from '@/axiosInstance';
-import {ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'TrainingsSection',
@@ -30,49 +30,97 @@ export default {
         trainings.value = response.data;
       } catch (error) {
         console.error('Erro ao buscar os treinamentos:', error);
+        Swal.fire('Erro', 'Erro ao buscar os treinamentos.', 'error');
       }
     };
 
-    const testFetchAllTrainings = async () => {
-      try {
-        const response = await axiosInstance.get(`/users/${userId.value}/all-trainings`);
-        console.log('Response:', response.data);
-        alert('Requisição bem-sucedida! Verifique o console para ver a resposta.');
-      } catch (error) {
-        console.error('Erro ao testar a rota:', error);
-        alert('Erro ao testar a rota. Verifique o console para mais detalhes.');
-      }
+    const confirmEnrollTraining = (trainingId) => {
+      Swal.fire({
+        title: 'Você tem certeza?',
+        text: 'Você será inscrito neste treinamento!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, inscrever!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          enrollTraining(trainingId);
+        }
+      });
     };
 
     const enrollTraining = async (trainingId) => {
       try {
         await axiosInstance.post(`/trainings/${trainingId}/enroll`);
         fetchAllTrainings(); // Refresh the list after enrollment
-        alert('Inscrição realizada com sucesso!');
+        Swal.fire('Sucesso', 'Inscrição realizada com sucesso!', 'success');
       } catch (error) {
         console.error('Erro ao inscrever no treinamento:', error);
-        alert('Erro ao inscrever no treinamento.');
+        Swal.fire('Erro', 'Erro ao inscrever no treinamento.', 'error');
       }
+    };
+
+    const confirmCancelEnrollment = (trainingId) => {
+      Swal.fire({
+        title: 'Você tem certeza?',
+        text: 'Sua inscrição será cancelada!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Não'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          cancelEnrollment(trainingId);
+        }
+      });
     };
 
     const cancelEnrollment = async (trainingId) => {
       try {
         await axiosInstance.post(`/trainings/${trainingId}/cancel-enrollment`);
         fetchAllTrainings(); // Refresh the list after canceling enrollment
-        alert('Inscrição cancelada com sucesso!');
+        Swal.fire('Sucesso', 'Inscrição cancelada com sucesso!', 'success');
       } catch (error) {
         console.error('Erro ao cancelar inscrição no treinamento:', error);
-        alert('Erro ao cancelar inscrição no treinamento.');
+        Swal.fire('Erro', 'Erro ao cancelar inscrição no treinamento.', 'error');
+      }
+    };
+
+    const confirmUpdateStatus = (trainingId, currentStatus) => {
+      if (currentStatus === 'completed') {
+        Swal.fire({
+          title: 'Você tem certeza?',
+          text: 'Ao marcar como concluído, o treinamento ainda poderá ser visualizado no item de menu "Meu histórico".',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sim, concluir!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            updateTrainingStatus(trainingId, currentStatus);
+          } else {
+            fetchAllTrainings(); // Refresh the list to revert changes
+          }
+        });
+      } else {
+        updateTrainingStatus(trainingId, currentStatus);
       }
     };
 
     const updateTrainingStatus = async (trainingId, status) => {
       try {
-        await axiosInstance.post(`/trainings/${trainingId}/update-status`, {status});
-        alert('Status atualizado com sucesso!');
+        await axiosInstance.post(`/trainings/${trainingId}/update-status`, { status });
+        fetchAllTrainings(); // Refresh the list after updating the status
+        Swal.fire('Sucesso', 'Status atualizado com sucesso!', 'success');
       } catch (error) {
         console.error('Erro ao atualizar o status do treinamento:', error);
-        alert('Erro ao atualizar o status do treinamento.');
+        Swal.fire('Erro', 'Erro ao atualizar o status do treinamento.', 'error');
       }
     };
 
@@ -82,10 +130,9 @@ export default {
 
     return {
       trainings,
-      testFetchAllTrainings,
-      enrollTraining,
-      cancelEnrollment,
-      updateTrainingStatus,
+      confirmEnrollTraining,
+      confirmCancelEnrollment,
+      confirmUpdateStatus,
     };
   }
 };
