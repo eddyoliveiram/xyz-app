@@ -21,15 +21,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // AUTH + ADMIN
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/test-admin', function () {
-        return response()->json(['message' => 'You are an admin!']);
-    });
-
     Route::get('/trainings', [TrainingController::class, 'index']);
     Route::post('/trainings', [TrainingController::class, 'store']);
     Route::put('/trainings/{training}', [TrainingController::class, 'update']);
     Route::delete('/trainings/{training}', [TrainingController::class, 'destroy']);
-
 
     Route::get('/subordinates', [UserController::class, 'index']);
     Route::post('/subordinates', [UserController::class, 'store']);
@@ -37,8 +32,9 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/subordinates/{user}', [UserController::class, 'destroy']);
 });
 
-// AUTH ONLY
+// AUTH
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/users/{user}/all-trainings', [UserController::class, 'allTrainings']);
     Route::get('/users/{user}/completed-trainings', [UserController::class, 'completedTrainings']);
 

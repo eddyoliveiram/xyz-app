@@ -8,7 +8,7 @@
         <NavItem to="/admin/subordinates" icon="fas fa-users" text="Gerenciar Subordinados" />
         <!-- <NavItem to="#" icon="fas fa-file-alt" text="Relatórios" /> -->
         <!-- <NavItem to="#" icon="fas fa-cogs" text="Configurações" /> -->
-        <LogoutButton @logout="confirmLogout" />
+        <LogoutButton :disabled="isProcessing" @logout="confirmLogout" />
       </ul>
     </div>
   </div>
@@ -34,19 +34,34 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isProcessing: false
+    };
+  },
   methods: {
     async logout() {
+      this.isProcessing = true;
       try {
         await axiosInstance.post('/logout');
-      } catch (error) {
-        console.error('Error during logout request:', error);
-      } finally {
         localStorage.removeItem('is_admin');
         localStorage.removeItem('user_name');
         localStorage.removeItem('token');
         delete axiosInstance.defaults.headers.common['Authorization'];
-        this.$router.push('/');
-        Swal.fire('Deslogado', 'Você foi deslogado com sucesso.', 'success');
+        Swal.fire({
+          title: '',
+          text: 'Deslogando...',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.$router.push('/');
+        });
+      } catch (error) {
+        console.error('Error during logout request:', error);
+        Swal.fire('Erro', 'Erro durante o logout.', 'error');
+      } finally {
+        this.isProcessing = false;
       }
     },
     confirmLogout() {

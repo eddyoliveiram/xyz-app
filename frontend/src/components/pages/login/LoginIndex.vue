@@ -28,6 +28,7 @@ import { inject } from 'vue';
 import FormButton from '@/components/base/FormButton.vue';
 import FormField from '@/components/base/FormField.vue';
 import FormLabel from '@/components/base/FormLabel.vue';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'FormLogin',
@@ -67,16 +68,24 @@ export default {
           localStorage.setItem('user_name', response.data.user.name);
           axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
           this.updateState();
-          if (response.data.is_admin) {
-            this.$router.push('/admin/dashboard');
-          } else {
-            this.$router.push('/subordinate/home');
-          }
+          Swal.fire({
+            title: '',
+            text: 'Realizando login...',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            if (response.data.is_admin) {
+              this.$router.push('/admin/dashboard');
+            } else {
+              this.$router.push('/subordinate/home');
+            }
+          });
         } else {
           console.log('Token not received');
         }
       } catch (error) {
-        console.log('Login failed.');
+        Swal.fire('Erro', error.response.data.message || 'Login failed.', 'error');
       }
     }
   }

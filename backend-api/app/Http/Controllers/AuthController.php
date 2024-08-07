@@ -19,11 +19,11 @@ class AuthController extends Controller
         $user = User::where('login', $request->login)->first();
 
         if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(['message' => 'Usuário não encontrado.'], 404);
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid credentials.'], 401);
+            return response()->json(['message' => 'Credenciais não encontradas.'], 401);
         }
 
         $token = $user->createToken('UserToken')->plainTextToken;
@@ -43,6 +43,6 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => 'Logout com sucesso.'], 200);
     }
 }

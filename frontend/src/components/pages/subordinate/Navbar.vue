@@ -6,7 +6,7 @@
         <NavItem to="/subordinate/home" icon="fas fa-house" text="Início" />
         <NavItem to="/subordinate/records" icon="fas fa-clock" text="Meu histórico" />
         <!--        <NavItem to="#" icon="fas fa-cogs" text="Configurações" />-->
-        <LogoutButton @logout="confirmLogout" />
+        <LogoutButton :disabled="isProcessing" @logout="confirmLogout" />
       </ul>
     </div>
   </div>
@@ -32,17 +32,32 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isProcessing: false
+    };
+  },
   methods: {
     async logout() {
+      this.isProcessing = true;
       try {
         await axiosInstance.post('/logout');
-      } catch (error) {
-        console.error('Error during logout request:', error);
-      } finally {
         localStorage.removeItem('token');
         delete axiosInstance.defaults.headers.common['Authorization'];
-        this.$router.push('/');
-        Swal.fire('Deslogado', 'Você foi deslogado com sucesso.', 'success');
+        Swal.fire({
+          title: 'Deslogado',
+          text: 'Você foi deslogado com sucesso.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.$router.push('/');
+        });
+      } catch (error) {
+        console.error('Error during logout request:', error);
+        Swal.fire('Erro', 'Erro durante o logout.', 'error');
+      } finally {
+        this.isProcessing = false;
       }
     },
     confirmLogout() {
