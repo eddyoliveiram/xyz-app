@@ -18,7 +18,7 @@ git clone https://github.com/eddyoliveiram/xyz-app.git
 
 ### Frontend
 
-Abra um terminal e acessar a pasta do frontend
+Abra um terminal e acesse a pasta do frontend
 ~~~
 cd frontend
 ~~~		
