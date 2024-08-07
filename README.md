@@ -99,3 +99,10 @@ Github
 ### Diagrama de Entidade-Relacionamento (ERD)
 
 ![drawsql](https://github.com/user-attachments/assets/3b31ae59-4515-4130-99de-54faaae21af8)
+
+### Informações Adicionais
+~~~
+Construí esta aplicação em pouco mais de 3 dias, devido ao prazo extremamente curto informado.
+Por esse motivo, a aplicação atualmente possui poucas funcionalidades.
+No entanto, acredito que seja suficiente para avaliar a qualidade do código produzido.
+~~~
