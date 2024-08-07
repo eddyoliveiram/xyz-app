@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         $faker = Factory::create();
 
         User::create([
-            'name' => 'Admin (Gestor)',
+            'name' => 'Admin',
             'login' => 'admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin'),
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Admin 2 (Gestor)',
+            'name' => 'Admin 2',
             'login' => 'admin2',
             'email' => 'admin2@example.com',
             'password' => Hash::make('admin2'),
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             'is_admin' => false,
         ]);
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 9) as $index) {
             User::create([
                 'name' => $faker->name(),
                 'login' => $faker->unique()->userName(),

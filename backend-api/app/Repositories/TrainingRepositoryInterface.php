@@ -14,4 +14,6 @@ interface TrainingRepositoryInterface
     public function enrollUser(Training $training, int $userId);
     public function cancelEnrollment(Training $training, int $userId);
     public function updateStatus(Training $training, int $userId, string $status);
+    public function getTrainingSummary(int $id);
+    public function getTrainingsBySubordinate(int $id);
 }

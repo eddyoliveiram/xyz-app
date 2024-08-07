@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/trainings', [TrainingController::class, 'store']);
     Route::put('/trainings/{training}', [TrainingController::class, 'update']);
     Route::delete('/trainings/{training}', [TrainingController::class, 'destroy']);
+    Route::get('/training-summary/{id}', [TrainingController::class, 'getTrainingSummary']);
+    Route::get('/subordinate-trainings/{id}', [TrainingController::class, 'getTrainingsBySubordinate']);
 
     Route::get('/subordinates', [UserController::class, 'index']);
     Route::post('/subordinates', [UserController::class, 'store']);

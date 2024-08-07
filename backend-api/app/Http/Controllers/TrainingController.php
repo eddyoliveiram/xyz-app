@@ -78,4 +78,16 @@ class TrainingController extends Controller
 
         return response()->json(['message' => 'Status updated successfully'], 200);
     }
+
+    public function getTrainingSummary($id)
+    {
+        $summary = $this->trainingRepository->getTrainingSummary($id);
+        return response()->json($summary);
+    }
+
+    public function getTrainingsBySubordinate($id)
+    {
+        $data = $this->trainingRepository->getTrainingsBySubordinate($id);
+        return response()->json($data);
+    }
 }

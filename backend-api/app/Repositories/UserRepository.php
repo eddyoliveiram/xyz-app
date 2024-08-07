@@ -52,6 +52,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function completedTrainingsForUser(User $user)
     {
-        return $user->trainings()->wherePivot('status', 'completed')->get();
+        return $user->trainings()->wherePivotIn('status', ['aproved', 'reproved'])->get();
     }
 }
